@@ -1,14 +1,24 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
-import {signIn, signUp} from '../../auth';
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import {signIn} from '../../auth';
 import {styles} from './style';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      style={styles.container}>
       <Image
         source={require('../../../assets/logo.png')}
         style={styles.logo}
@@ -37,13 +47,15 @@ const LoginScreen = () => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.signUpButton}
-        onPress={() => signUp(email, password)}>
+        onPress={() => navigation.navigate('SignUp')}>
         <Text style={styles.signUpButtonText}>Sign Up</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.forgotPasswordButton}>
+      <TouchableOpacity
+        style={styles.forgotPasswordButton}
+        onPress={() => navigation.navigate('ForgotPassword')}>
         <Text style={styles.forgotPasswordButtonText}>Forgot Password?</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

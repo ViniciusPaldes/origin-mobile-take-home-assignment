@@ -1,12 +1,7 @@
 import auth from '@react-native-firebase/auth';
 
-export const signUp = async (email: string, password: string) => {
-  try {
-    await auth().createUserWithEmailAndPassword(email, password);
-    console.log('User signed up!');
-  } catch (error) {
-    console.error('Error signing up:', error);
-  }
+export const signUp = (email: string, password: string) => {
+  return auth().createUserWithEmailAndPassword(email, password);
 };
 
 export const signIn = async (email: string, password: string) => {
@@ -24,5 +19,16 @@ export const signOut = async () => {
     console.log('User signed out!');
   } catch (error) {
     console.error('Error signing out:', error);
+  }
+};
+
+export const resetPassword = async (email: string) => {
+  try {
+    await auth().sendPasswordResetEmail(email);
+    console.log('Password reset email sent!');
+    return true;
+  } catch (error) {
+    console.error('Error sending password reset email:', error);
+    throw error;
   }
 };
