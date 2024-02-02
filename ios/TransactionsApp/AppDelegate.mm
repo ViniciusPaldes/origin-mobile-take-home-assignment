@@ -1,6 +1,9 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+//#import <UIKit/UIKit.h>
+//#import <FirebaseCore/FirebaseCore.h> // Import FirebaseCore framework
+
 
 @implementation AppDelegate
 
@@ -9,6 +12,7 @@
   self.moduleName = @"TransactionsApp";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
+//  [FIRApp configure]; // Configure Firebase
   self.initialProps = @{};
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
