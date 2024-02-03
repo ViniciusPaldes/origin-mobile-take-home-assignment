@@ -1,13 +1,11 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
-import {styles} from './style';
-import {signOut} from '../../auth';
+import {View} from 'react-native';
+import TransactionList from '../../components/transation-list';
 
 const HomeScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home screen</Text>
-      <Button onPress={signOut} title="Logout" />
+    <View>
+      <TransactionList />
     </View>
   );
 };
