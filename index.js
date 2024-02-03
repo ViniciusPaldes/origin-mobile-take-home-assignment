@@ -4,6 +4,7 @@ import App from './src';
 import {name as appName} from './app.json';
 import firebase from '@react-native-firebase/app';
 import Config from 'react-native-config';
+import realm from './src/database';
 
 // Your Firebase config
 const firebaseConfig = {

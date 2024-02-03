@@ -1,6 +1,10 @@
 import {useEffect, useState, useCallback} from 'react';
+import {
+  getLocalTransactions,
+  updateLocalTransactions,
+} from '../../model/transaction';
 
-export type Transaction = {
+export type TransactionVM = {
   Id: number;
   Amount: number;
   Date: string;
@@ -13,7 +17,7 @@ export type Transaction = {
 };
 
 export const useTransactions = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<TransactionVM[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -26,11 +30,11 @@ export const useTransactions = () => {
           `https://tque3jpn1e.execute-api.us-east-1.amazonaws.com/mobile-tha/transactions?page=${pageNum}&pageSize=${pageSize}`,
         );
         const data = await response.json();
-        if (pageNum === 1) {
-          setTransactions(data.Transactions);
-        } else {
-          setTransactions(prev => [...prev, ...data.Transactions]);
-        }
+        // TODO implement the logic to identify pull to refresh
+        updateLocalTransactions(data.Transactions, false);
+
+        const localTransactions = getLocalTransactions();
+        setTransactions(localTransactions);
       } catch (error) {
         console.error('Failed to fetch transactions:', error);
       } finally {
