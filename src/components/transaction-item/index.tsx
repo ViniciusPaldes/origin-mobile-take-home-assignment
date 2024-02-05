@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {Transaction} from '../../viewModel/Transaction';
 import {styles} from './style';
+import {Transaction} from '../../model/transaction';
 
 type TransactionItemProps = {
   transaction: Transaction;
