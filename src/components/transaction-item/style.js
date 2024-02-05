@@ -8,9 +8,9 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#eee',
     width: '100%',
   },
-  icon: {
-    fontSize: 24,
-    marginRight: 10,
+  iconContainer: {
+    justifyContent: 'center',
+    paddingEnd: 8,
   },
   details: {
     flex: 1,
