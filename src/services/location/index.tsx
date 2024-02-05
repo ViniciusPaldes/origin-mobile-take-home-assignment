@@ -1,13 +1,13 @@
 import {Platform} from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
-export const requestLocationPermission = async () => {
+export const requestPermission = async (iosPermission, androidPermission) => {
   let permission;
 
   if (Platform.OS === 'ios') {
-    permission = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
+    permission = iosPermission;
   } else {
-    permission = PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+    permission = androidPermission;
   }
   const status = await check(permission);
   if (status === RESULTS.DENIED) {
@@ -16,4 +16,18 @@ export const requestLocationPermission = async () => {
   }
 
   return status === RESULTS.GRANTED;
+};
+
+export const requestLocationPermission = async () => {
+  return requestPermission(
+    PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+  );
+};
+
+export const requestLibraryPermission = async () => {
+  return requestPermission(
+    PERMISSIONS.IOS.PHOTO_LIBRARY,
+    PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+  );
 };

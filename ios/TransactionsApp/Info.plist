@@ -55,6 +55,11 @@
 	<string>We need access to your location to attach it to the transaction.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need access to your location to attach it to the transaction, even in the background.</string>
-
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to attach it to the transaction.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need access to your photo library to attach it to the transaction.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your photo library to attach it to the transaction.</string>
 </dict>
 </plist>

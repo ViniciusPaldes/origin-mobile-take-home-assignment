@@ -3,16 +3,23 @@ import {View, Text, Button, Alert} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {styles} from './style';
 import Geolocation from 'react-native-geolocation-service';
-import {requestLocationPermission} from '../../services/location';
-import {updateTransactionCoordinates} from '../../services/transaction';
+import {
+  requestLibraryPermission,
+  requestLocationPermission,
+} from '../../services/location';
+import {
+  updateTransactionCoordinates,
+  uploadImage,
+} from '../../services/transaction';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const TransactionDetailScreen = ({route}) => {
   const {transaction} = route.params;
 
   useEffect(() => {
     const getPermission = async () => {
-      const hasPermission = await requestLocationPermission();
-      if (!hasPermission) {
+      const hasLocationPermission = await requestLocationPermission();
+      if (!hasLocationPermission) {
         Alert.alert(
           'Location Permission',
           'Location permission is required to attach your location to a transaction.',
@@ -23,6 +30,35 @@ const TransactionDetailScreen = ({route}) => {
 
     getPermission();
   }, []);
+
+  const attachImage = async () => {
+    const hasPermission = await requestLibraryPermission();
+    if (!hasPermission) {
+      Alert.alert(
+        'Library Permission',
+        'You need to allow access to your photo library to select a picture.',
+        [{text: 'OK'}],
+      );
+    } else {
+      const options = {
+        mediaType: 'photo',
+        selectionLimit: 1,
+      };
+
+      launchImageLibrary(options, response => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+        } else {
+          const uri = response.assets[0].uri;
+          uploadImage(transaction.Id, uri).then(result => {
+            console.log('Result for final upload is ', result);
+          });
+        }
+      });
+    }
+  };
 
   const attachLocation = () => {
     Geolocation.getCurrentPosition(
@@ -93,6 +129,7 @@ const TransactionDetailScreen = ({route}) => {
         />
       </MapView>
       <Button title="Attach My Location" onPress={attachLocation} />
+      <Button title="Attach a Receipt" onPress={attachImage} />
     </View>
   );
 };
