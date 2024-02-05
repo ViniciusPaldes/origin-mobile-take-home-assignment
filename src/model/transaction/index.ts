@@ -13,9 +13,14 @@ export type Transaction = {
   ReceiptImage: string | null;
 };
 
+// To use for order feature
+export const transactionOrderOptions = ['Amount', 'Date', 'Vendor', 'Type'];
+
 interface FilterCriteria {
   type?: string;
   vendor?: string;
+  orderBy?: string;
+  orderDirection?: string;
 }
 
 export const getLocalTransactions = (
@@ -38,7 +43,14 @@ export const getLocalTransactions = (
     console.error(error);
   }
 
-  transactions = transactions.sorted('date', true);
+  if (filterCriteria?.orderBy && filterCriteria?.orderDirection) {
+    transactions = transactions.sorted(
+      filterCriteria?.orderBy.toLowerCase(),
+      filterCriteria?.orderDirection !== 'ascending',
+    );
+  } else {
+    transactions = transactions.sorted('date', true);
+  }
 
   return transactions.map(transaction => ({
     Id: transaction.id as number,

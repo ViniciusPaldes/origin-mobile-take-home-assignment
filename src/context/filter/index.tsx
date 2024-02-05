@@ -8,11 +8,15 @@ interface FilterContextType {
   filterCriteria: {
     type?: string;
     vendor?: string;
+    orderBy?: string;
+    orderDirection?: string;
   };
   setFilterCriteria: React.Dispatch<
     React.SetStateAction<{
       type?: string;
       vendor?: string;
+      orderBy?: string;
+      orderDirection?: string;
     }>
   >;
 }
