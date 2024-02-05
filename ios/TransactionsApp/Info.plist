@@ -51,5 +51,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location to attach it to the transaction.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need access to your location to attach it to the transaction, even in the background.</string>
+
 </dict>
 </plist>

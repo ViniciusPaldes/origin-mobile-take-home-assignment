@@ -5,6 +5,7 @@ import {
   updateLocalTransactions,
 } from '../../model/transaction';
 import {useFilter} from '../../context/filter';
+import Config from 'react-native-config';
 
 export const useTransactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -49,7 +50,7 @@ export const useTransactions = () => {
   async function fetchTransactionsFromAPI(apiPage: number, pageSize = 20) {
     try {
       const response = await fetch(
-        `https://tque3jpn1e.execute-api.us-east-1.amazonaws.com/mobile-tha/transactions?page=${apiPage}&pageSize=${pageSize}`,
+        `${Config.API_URL}/transactions?page=${apiPage}&pageSize=${pageSize}`,
       );
 
       if (!response.ok) {
@@ -94,4 +95,25 @@ export const useTransactions = () => {
     handleRefresh,
     handleLoadMore,
   };
+};
+
+export const updateTransactionCoordinates = async (
+  id: string,
+  lat: number,
+  lon: number,
+) => {
+  const response = await fetch(
+    `${Config.API_URL}/transactions/${id}/coordinates`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        Lat: lat,
+        Lon: lon,
+      }),
+    },
+  );
+  return response;
 };
