@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import NotLoggedStackNavigator from './notLogged';
-import MainTabNavigator from './mainTab';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
+import TransactionNavigator from './transaction';
 
 const Stack = createStackNavigator();
 
@@ -27,7 +27,7 @@ function AppNavigator() {
         {user ? (
           <Stack.Screen
             name="MainStack"
-            component={MainTabNavigator}
+            component={TransactionNavigator}
             options={{headerShown: false}}
           />
         ) : (

@@ -2,25 +2,37 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {styles} from './style';
 import {Transaction} from '../../model/transaction';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 type TransactionItemProps = {
   transaction: Transaction;
 };
 
 const TransactionItem: React.FC<TransactionItemProps> = ({transaction}) => {
-  // TODO implement better iconography for the whole app
   const getIcon = (type: string) => {
+    let iconName;
+    let iconColor = 'black'; // Default color, adjust as needed
+
     switch (type) {
       case 'withdrawal':
       case 'payment':
-        return '↓';
+        iconName = 'arrow-down';
+        iconColor = 'red';
+        break;
       case 'deposit':
-        return '↑';
+        iconName = 'arrow-up';
+        iconColor = 'green';
+        break;
       case 'invoice':
-        return '📄';
+        iconName = 'file-text';
+        iconColor = 'blue';
+        break;
       default:
-        return '⧉';
+        iconName = 'question-circle';
+        iconColor = 'grey';
     }
+
+    return <FontAwesome name={iconName} size={20} color={iconColor} />;
   };
 
   const getAmountColor = (type: string) => {
@@ -39,7 +51,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({transaction}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.icon}>{getIcon(transaction.Type)}</Text>
+      <View style={styles.iconContainer}>{getIcon(transaction.Type)}</View>
       <View style={styles.details}>
         <Text style={styles.date}>
           {new Date(transaction.Date).toLocaleDateString()}
