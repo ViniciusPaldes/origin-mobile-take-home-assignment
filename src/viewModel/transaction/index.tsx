@@ -67,7 +67,7 @@ export const useTransactions = () => {
         return []; // Return an empty array if there are no transactions or if the structure is not as expected
       }
 
-      return data.Transactions.map(transaction => ({
+      return data.Transactions.map((transaction: Transaction) => ({
         Id: transaction.Id,
         Amount: transaction.Amount,
         Date: transaction.Date,
