@@ -1,9 +1,16 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {styles} from './style';
 import {Transaction} from '../../model/transaction';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  Container,
+  IconContainer,
+  Details,
+  DateText,
+  VendorText,
+  AmountText,
+  TypeText,
+  DetailsHorizontal,
+} from './style';
 
 type TransactionItemProps = {
   onPress: () => void;
@@ -40,34 +47,22 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
     return <FontAwesome name={iconName} size={20} color={iconColor} />;
   };
 
-  const getAmountColor = (type: string) => {
-    switch (type) {
-      case 'withdrawal':
-      case 'payment':
-        return styles.amountWithdrawal;
-      case 'deposit':
-        return styles.amountDeposit;
-      case 'invoice':
-        return styles.amountInvoice;
-      default:
-        return styles.amount;
-    }
-  };
-
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <View style={styles.iconContainer}>{getIcon(transaction.Type)}</View>
-      <View style={styles.details}>
-        <Text style={styles.date}>
-          {new Date(transaction.Date).toLocaleDateString()}
-        </Text>
-        <Text style={styles.vendor}>{transaction.Vendor}</Text>
-        <Text style={[styles.amount, getAmountColor(transaction.Type)]}>
-          ${transaction.Amount.toFixed(2)}
-        </Text>
-        <Text style={styles.type}>{transaction.Type}</Text>
-      </View>
-    </TouchableOpacity>
+    <Container onPress={onPress}>
+      <IconContainer transactionType={transaction.Type}>
+        {getIcon(transaction.Type)}
+      </IconContainer>
+      <Details>
+        <VendorText>{transaction.Vendor}</VendorText>
+        <DetailsHorizontal>
+          <AmountText transactionType={transaction.Type}>
+            ${transaction.Amount.toFixed(2)}
+          </AmountText>
+          <TypeText>({transaction.Type})</TypeText>
+        </DetailsHorizontal>
+        <DateText>{new Date(transaction.Date).toLocaleDateString()}</DateText>
+      </Details>
+    </Container>
   );
 };
 
