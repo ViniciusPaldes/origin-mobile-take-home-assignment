@@ -1,26 +1,19 @@
 import realm from '../../database';
 import Realm from 'realm';
-import {TransactionVM} from '../../viewModel/Transaction';
 
-export class Transaction {
-  static schema = {
-    name: 'Transaction',
-    primaryKey: 'id',
-    properties: {
-      id: 'int',
-      amount: 'double',
-      date: 'date',
-      vendor: 'string',
-      type: 'string',
-      category: 'string',
-      lat: 'double',
-      lon: 'double',
-      receiptImage: 'string?',
-    },
-  };
-}
+export type Transaction = {
+  Id: number;
+  Amount: number;
+  Date: string;
+  Vendor: string;
+  Type: string;
+  Category: string;
+  Lat: number;
+  Lon: number;
+  ReceiptImage: string | null;
+};
 
-export const getLocalTransactions = (): TransactionVM[] => {
+export const getLocalTransactions = (): Transaction[] => {
   const transactions = realm.objects('Transaction').sorted('date', true);
   return transactions.map(transaction => ({
     Id: transaction.id as number,
@@ -36,7 +29,7 @@ export const getLocalTransactions = (): TransactionVM[] => {
 };
 
 export function updateLocalTransactions(
-  fetchedTransactions: [TransactionVM],
+  fetchedTransactions: [Transaction],
   forceRefresh = false,
 ) {
   // If forceRefresh is true, clear existing transactions before adding new ones
@@ -49,7 +42,7 @@ export function updateLocalTransactions(
   addTransactionsToRealm(fetchedTransactions);
 }
 
-function addTransactionsToRealm(fetchedTransactions: [TransactionVM]) {
+function addTransactionsToRealm(fetchedTransactions: [Transaction]) {
   realm.write(() => {
     fetchedTransactions.forEach(transaction => {
       let existingTransaction = realm.objectForPrimaryKey(

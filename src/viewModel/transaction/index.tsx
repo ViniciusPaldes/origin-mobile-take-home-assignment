@@ -1,23 +1,12 @@
 import {useEffect, useState, useCallback} from 'react';
 import {
+  Transaction,
   getLocalTransactions,
   updateLocalTransactions,
 } from '../../model/transaction';
 
-export type TransactionVM = {
-  Id: number;
-  Amount: number;
-  Date: string;
-  Vendor: string;
-  Type: string;
-  Category: string;
-  Lat: number;
-  Lon: number;
-  ReceiptImage: string | null;
-};
-
 export const useTransactions = () => {
-  const [transactions, setTransactions] = useState<TransactionVM[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
