@@ -1833,6 +1833,8 @@ PODS:
   - RecaptchaInterop (100.0.0)
   - RNCMaskedView (0.1.11):
     - React
+  - RNCPicker (2.6.1):
+    - React-Core
   - RNFBApp (18.8.0):
     - Firebase/CoreOnly (= 10.20.0)
     - React-Core
@@ -1918,6 +1920,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RealmJS (from `../node_modules/realm`)
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -2058,6 +2061,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/realm"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNCPicker:
+    :path: "../node_modules/@react-native-picker/picker"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
@@ -2149,6 +2154,7 @@ SPEC CHECKSUMS:
   RealmJS: a62dc7a1f94b888fe9e8712cd650167ad97dc636
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
+  RNCPicker: b18aaf30df596e9b1738e7c1f9ee55402a229dca
   RNFBApp: a4f5b074984cf612e4c97d68b42be690c59e2638
   RNFBAuth: bd014d486a51b5414b642dd155763c5873a2b3e4
   RNGestureHandler: 28bdf9a766c081e603120f79e925b72817c751c6

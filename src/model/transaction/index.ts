@@ -13,8 +13,33 @@ export type Transaction = {
   ReceiptImage: string | null;
 };
 
-export const getLocalTransactions = (): Transaction[] => {
-  const transactions = realm.objects('Transaction').sorted('date', true);
+interface FilterCriteria {
+  type?: string;
+  vendor?: string;
+}
+
+export const getLocalTransactions = (
+  filterCriteria?: FilterCriteria,
+): Transaction[] => {
+  let transactions = realm.objects('Transaction');
+
+  try {
+    if (filterCriteria?.type) {
+      transactions = transactions.filtered('type == $0', filterCriteria.type);
+    }
+
+    if (filterCriteria?.vendor) {
+      transactions = transactions.filtered(
+        'vendor == $0',
+        filterCriteria.vendor,
+      );
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  transactions = transactions.sorted('date', true);
+
   return transactions.map(transaction => ({
     Id: transaction.id as number,
     Amount: transaction.amount as number,
@@ -69,3 +94,15 @@ function addTransactionsToRealm(fetchedTransactions: [Transaction]) {
     });
   });
 }
+
+export const getUniqueTransactionTypes = () => {
+  const transactions = getLocalTransactions();
+  const uniqueTypes = Array.from(new Set(transactions.map(t => t.Type)));
+  return uniqueTypes;
+};
+
+export const getUniqueVendors = () => {
+  const transactions = getLocalTransactions();
+  const uniqueVendors = Array.from(new Set(transactions.map(t => t.Vendor)));
+  return uniqueVendors;
+};

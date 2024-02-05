@@ -19,8 +19,7 @@ const MainTabNavigator = () => {
         // Add this to apply options based on the route
         headerRight: () =>
           route.name === 'Transactions' ? (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('FilterOrder')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Filter')}>
               <FontAwesome name="filter" size={25} color="black" />
             </TouchableOpacity>
           ) : null,

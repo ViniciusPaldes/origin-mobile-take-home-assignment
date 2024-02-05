@@ -4,22 +4,24 @@ import {
   getLocalTransactions,
   updateLocalTransactions,
 } from '../../model/transaction';
+import {useFilter} from '../../context/filter';
 
 export const useTransactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const {filterCriteria} = useFilter();
 
   const loadTransactions = useCallback(async () => {
     setLoading(true);
 
-    let localTransactions = getLocalTransactions();
+    let localTransactions = getLocalTransactions(filterCriteria);
     if (localTransactions.length === 0 || isRefreshing || page > 1) {
       try {
         const fetchedTransactions = await fetchTransactionsFromAPI(page);
         updateLocalTransactions(fetchedTransactions, isRefreshing);
-        localTransactions = getLocalTransactions();
+        localTransactions = getLocalTransactions(filterCriteria);
       } catch (error) {
         console.error('Failed to fetch transactions:', error);
       }
@@ -27,7 +29,7 @@ export const useTransactions = () => {
     setTransactions(localTransactions);
     setLoading(false);
     setIsRefreshing(false);
-  }, [page, isRefreshing]);
+  }, [page, isRefreshing, filterCriteria]);
 
   useEffect(() => {
     loadTransactions();
