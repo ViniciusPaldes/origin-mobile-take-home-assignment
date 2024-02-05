@@ -1,13 +1,13 @@
 import React from 'react';
-import {View} from 'react-native';
 import TransactionList from '../../components/transation-list';
+import {StackNavigationProp} from '@react-navigation/stack';
 
-const HomeScreen = () => {
-  return (
-    <View>
-      <TransactionList />
-    </View>
-  );
+type Props = {
+  navigation: StackNavigationProp<any>;
+};
+
+const HomeScreen: React.FC<Props> = ({navigation}) => {
+  return <TransactionList navigation={navigation} />;
 };
 
 export default HomeScreen;

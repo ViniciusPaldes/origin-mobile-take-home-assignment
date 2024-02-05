@@ -2,15 +2,23 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <Firebase.h>
+#import <GoogleMaps/GoogleMaps.h>
+
+#import "RNCConfig.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   self.moduleName = @"TransactionsApp";
-  [FIRApp configure]; // Configure Firebase
+  // Firebase configuration
+  [FIRApp configure];
+  
+  // Google maps API config
+  NSString *googleMapsApiKey = [RNCConfig envFor:@"GOOGLE_MAPS_API_KEY"];
+  [GMSServices provideAPIKey:googleMapsApiKey];
+  
   self.initialProps = @{};
-
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

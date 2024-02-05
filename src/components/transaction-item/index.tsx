@@ -3,15 +3,20 @@ import {View, Text} from 'react-native';
 import {styles} from './style';
 import {Transaction} from '../../model/transaction';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type TransactionItemProps = {
+  onPress: () => void;
   transaction: Transaction;
 };
 
-const TransactionItem: React.FC<TransactionItemProps> = ({transaction}) => {
+const TransactionItem: React.FC<TransactionItemProps> = ({
+  onPress,
+  transaction,
+}) => {
   const getIcon = (type: string) => {
     let iconName;
-    let iconColor = 'black'; // Default color, adjust as needed
+    let iconColor = 'black';
 
     switch (type) {
       case 'withdrawal':
@@ -50,7 +55,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({transaction}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.iconContainer}>{getIcon(transaction.Type)}</View>
       <View style={styles.details}>
         <Text style={styles.date}>
@@ -62,7 +67,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({transaction}) => {
         </Text>
         <Text style={styles.type}>{transaction.Type}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
