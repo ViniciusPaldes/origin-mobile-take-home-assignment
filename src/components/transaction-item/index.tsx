@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {TransactionVM} from '../../viewModel/Transaction';
 import {styles} from './style';
+import {Transaction} from '../../model/transaction';
 
 type TransactionItemProps = {
-  transaction: TransactionVM;
+  transaction: Transaction;
 };
 
 const TransactionItem: React.FC<TransactionItemProps> = ({transaction}) => {
