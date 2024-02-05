@@ -7,7 +7,6 @@ const TransactionList = () => {
   const {transactions, loading, isRefreshing, handleRefresh, handleLoadMore} =
     useTransactions();
 
-  //TODO implement filter and order options
   return (
     <FlatList
       data={transactions}
