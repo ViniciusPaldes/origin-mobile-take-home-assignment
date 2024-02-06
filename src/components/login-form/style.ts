@@ -1,23 +1,17 @@
 import styled from 'styled-components/native';
 
-export const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
+export const Container = styled.View`
   flex: 1;
+  width: 100%;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background-color: #fafbf6;
-`;
-
-export const StyledLogo = styled.Image`
-  width: 150px;
-  height: 150px;
-  margin-bottom: 20px;
 `;
 
 export const StyledTitle = styled.Text`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: black;
+  text-align: center;
 `;
 
 export const StyledInput = styled.TextInput`
@@ -43,4 +37,23 @@ export const StyledButtonText = styled.Text`
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+`;
+
+export const StyledSignUpButton = styled(StyledButton)`
+  border-color: #004c31;
+  border-width: 1px;
+  background-color: transparent;
+`;
+
+export const StyledSignUpButtonText = styled(StyledButtonText)`
+  color: #004c31;
+`;
+
+export const StyledForgotPasswordButton = styled.TouchableOpacity`
+  margin-top: 10px;
+`;
+
+export const StyledForgotPasswordButtonText = styled(StyledButtonText)`
+  color: #004c31;
+  font-size: 16px;
 `;
