@@ -1,23 +1,7 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import {resetPassword} from '../../auth';
-import {
-  Button,
-  ButtonText,
-  Container,
-  Input,
-  Logo,
-  Title,
-  styles,
-} from './style';
+import {ActivityIndicator, Alert, Platform} from 'react-native';
+import {resetPassword} from '../../services/auth';
+import {Button, ButtonText, Container, Input, Logo, Title} from './style';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 type Props = {
@@ -26,23 +10,41 @@ type Props = {
 
 const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleResetPassword = async () => {
-    try {
-      await resetPassword(email);
-      Alert.alert(
-        'Check your email',
-        'A link to reset your password has been sent to your email.',
-        [
+  const handleResetPassword = () => {
+    setLoading(true);
+    resetPassword(email)
+      .then(() => {
+        Alert.alert(
+          'Check your email',
+          'A link to reset your password has been sent to your email.',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.goBack(), // Navigate back when OK is pressed
+            },
+          ],
+        );
+      })
+      .catch(error => {
+        Alert.alert(
+          'Failed to send reset email',
+          error.message,
+          [
+            {
+              text: 'OK',
+              style: 'cancel',
+            },
+          ],
           {
-            text: 'OK',
-            onPress: () => navigation.goBack(), // Navigate back when OK is pressed
+            cancelable: true,
           },
-        ],
-      );
-    } catch (error) {
-      Alert.alert('Failed to send reset email', error.message);
-    }
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -59,7 +61,11 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
         autoCapitalize="none"
       />
       <Button onPress={handleResetPassword}>
-        <ButtonText>Recover your password</ButtonText>
+        {loading ? (
+          <ActivityIndicator size="small" />
+        ) : (
+          <ButtonText>Recover your password</ButtonText>
+        )}
       </Button>
     </Container>
   );

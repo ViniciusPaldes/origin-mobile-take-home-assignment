@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Alert, Platform} from 'react-native';
-import {signUp} from '../../auth';
+import {ActivityIndicator, Alert, Platform} from 'react-native';
+import {signUp} from '../../services/auth';
 import {
   StyledButton,
   StyledButtonText,
@@ -13,14 +13,29 @@ import {
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSignUp = async () => {
-    try {
-      await signUp(email, password);
-    } catch (error) {
-      const errorMessage = error.message || 'An error occurred during signup.';
-      Alert.alert('Signup Failed', errorMessage);
-    }
+  const handleSignUp = () => {
+    setLoading(true);
+    signUp(email, password)
+      .catch(error => {
+        Alert.alert(
+          'Sign Up Failed',
+          error.message,
+          [
+            {
+              text: 'OK',
+              style: 'cancel',
+            },
+          ],
+          {
+            cancelable: true,
+          },
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -31,7 +46,11 @@ const SignUpScreen = () => {
         source={require('../../../assets/logo.png')}
         resizeMode="contain"
       />
-      <StyledTitle>Sign Up</StyledTitle>
+      {loading ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <StyledTitle>Sign Up</StyledTitle>
+      )}
       <StyledInput
         onChangeText={text => setEmail(text)}
         value={email}

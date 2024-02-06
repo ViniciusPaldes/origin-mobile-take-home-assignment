@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Platform} from 'react-native';
-import {signIn} from '../../auth';
+import {ActivityIndicator, Alert, Platform} from 'react-native';
+import {signIn} from '../../services/auth';
 import {
   StyledButton,
   StyledButtonText,
@@ -17,6 +17,30 @@ import {
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleLogin = () => {
+    setLoading(true);
+    signIn(email, password)
+      .catch(error => {
+        Alert.alert(
+          'Sign In Failed',
+          error.message,
+          [
+            {
+              text: 'OK',
+              style: 'cancel',
+            },
+          ],
+          {
+            cancelable: true,
+          },
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <StyledKeyboardAvoidingView
@@ -41,8 +65,12 @@ const LoginScreen = ({navigation}) => {
         secureTextEntry
         autoCapitalize="none"
       />
-      <StyledButton onPress={() => signIn(email, password)}>
-        <StyledButtonText>Sign In</StyledButtonText>
+      <StyledButton onPress={handleLogin}>
+        {loading ? (
+          <ActivityIndicator size="small" />
+        ) : (
+          <StyledButtonText>Sign In</StyledButtonText>
+        )}
       </StyledButton>
       <StyledSignUpButton onPress={() => navigation.navigate('SignUp')}>
         <StyledSignUpButtonText>Sign Up</StyledSignUpButtonText>
