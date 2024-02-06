@@ -140,10 +140,6 @@ const uploadToFirebaseStorage = async imageUri => {
 export const uploadImage = async (transactionId: string, imageUri) => {
   const imageUrl = await uploadToFirebaseStorage(imageUri);
 
-  console.log(
-    `Saving transaction with ID ${transactionId} with the image URL: ${imageUrl}`,
-  );
-
   const response = await fetch(
     `${Config.API_URL}/transactions/${transactionId}/receipt`,
     {
@@ -157,4 +153,16 @@ export const uploadImage = async (transactionId: string, imageUri) => {
     },
   );
   return response;
+};
+
+export const getAmountModifier = (type: string) => {
+  switch (type) {
+    case 'withdrawal':
+    case 'payment':
+      return '-';
+    case 'deposit':
+      return '+';
+    default:
+      return '';
+  }
 };

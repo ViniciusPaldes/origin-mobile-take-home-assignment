@@ -22,16 +22,19 @@ import {
   requestLocationPermission,
 } from '../../services/location';
 import {
+  getAmountModifier,
   updateTransactionCoordinates,
   uploadImage,
 } from '../../services/transaction';
 import {launchImageLibrary} from 'react-native-image-picker';
 import TypeIcon from '../../components/type-icon';
+import ReceiptViewer from '../../components/receipt-viewer';
 
 const TransactionDetailScreen = ({route}) => {
   const {transaction} = route.params;
   const [receiptLoading, setReceiptLoading] = useState<boolean>(false);
   const [locationLoading, setLocationLoading] = useState<boolean>(false);
+  const [viewerVisible, setViewerVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const getPermission = async () => {
@@ -49,49 +52,56 @@ const TransactionDetailScreen = ({route}) => {
   }, []);
 
   const attachImage = async () => {
-    setLocationLoading(false);
-    const hasPermission = await requestLibraryPermission();
-    if (!hasPermission) {
-      Alert.alert(
-        'Library Permission',
-        'You need to allow access to your photo library to select a picture.',
-        [{text: 'OK'}],
-      );
-      setReceiptLoading(false);
+    if (transaction.ReceiptImage) {
+      setViewerVisible(true);
     } else {
-      const options = {
-        mediaType: 'photo',
-        selectionLimit: 1,
-      };
+      setLocationLoading(false);
+      const hasPermission = await requestLibraryPermission();
+      if (!hasPermission) {
+        Alert.alert(
+          'Library Permission',
+          'You need to allow access to your photo library to select a picture.',
+          [{text: 'OK'}],
+        );
+        setReceiptLoading(false);
+      } else {
+        const options = {
+          mediaType: 'photo',
+          selectionLimit: 1,
+        };
 
-      launchImageLibrary(options, response => {
-        try {
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-            setReceiptLoading(false);
-          } else if (response.errorCode) {
-            throw new Error(`ImagePicker Error: ${response.errorMessage}`);
-          } else {
-            const uri = response.assets[0].uri;
-            uploadImage(transaction.Id, uri).then(result => {
-              console.log('Result is', result);
-              if (result?.ok) {
-                Alert.alert(
-                  'Success',
-                  'Receipt attached to the transaction successfully.',
-                );
-              } else {
-                throw new Error('Failed to update transaction receipt');
-              }
+        launchImageLibrary(options, response => {
+          try {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
               setReceiptLoading(false);
-            });
+            } else if (response.errorCode) {
+              throw new Error(`ImagePicker Error: ${response.errorMessage}`);
+            } else {
+              const uri = response.assets[0].uri;
+              uploadImage(transaction.Id, uri).then(result => {
+                console.log('Result is', result);
+                if (result?.ok) {
+                  Alert.alert(
+                    'Success',
+                    'Receipt attached to the transaction successfully.',
+                  );
+                } else {
+                  throw new Error('Failed to update transaction receipt');
+                }
+                setReceiptLoading(false);
+              });
+            }
+          } catch (error) {
+            Alert.alert(
+              'Error',
+              'Failed to attach location to the transaction.',
+            );
+            console.error(error);
+            setReceiptLoading(false);
           }
-        } catch (error) {
-          Alert.alert('Error', 'Failed to attach location to the transaction.');
-          console.error(error);
-          setReceiptLoading(false);
-        }
-      });
+        });
+      }
     }
   };
 
@@ -148,20 +158,13 @@ const TransactionDetailScreen = ({route}) => {
     }
   };
 
-  const getAmountModifier = (type: string) => {
-    switch (type) {
-      case 'withdrawal':
-      case 'payment':
-        return '-';
-      case 'deposit':
-        return '+';
-      default:
-        return '';
-    }
-  };
-
   return (
     <Container>
+      <ReceiptViewer
+        visible={viewerVisible}
+        onClose={() => setViewerVisible(false)}
+        imageUrl={transaction.ReceiptImage}
+      />
       <Map
         initialRegion={{
           latitude: transaction.Lat,
@@ -201,7 +204,11 @@ const TransactionDetailScreen = ({route}) => {
             {receiptLoading ? (
               <ActivityIndicator size={'small'} />
             ) : (
-              <ActionLabel>+ Add your receipt</ActionLabel>
+              <ActionLabel>
+                {transaction.ReceiptImage
+                  ? 'See receipt'
+                  : '+ Add your receipt'}
+              </ActionLabel>
             )}
           </ActionBt>
         </ContentAction>
