@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button} from 'react-native';
 import {useFilter} from '../../context/filter';
 import {Picker} from '@react-native-picker/picker';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {transactionOrderOptions} from '../../model/transaction';
-import {styles} from './style';
+import {transactionOrderOptions} from '../../database/model/transaction';
+import {Apply, ApplyText, Container, Label} from './style';
 
 type Props = {
   navigation: StackNavigationProp<any>;
@@ -34,8 +33,8 @@ const OrderScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Select Property to Order By:</Text>
+    <Container>
+      <Label>Select Property to Order By:</Label>
       <Picker
         selectedValue={selectedProperty}
         onValueChange={itemValue => setSelectedProperty(itemValue)}>
@@ -44,7 +43,7 @@ const OrderScreen: React.FC<Props> = ({navigation}) => {
         ))}
       </Picker>
 
-      <Text>Select Order Direction:</Text>
+      <Label>Select Order Direction:</Label>
       <Picker
         selectedValue={orderDirection}
         onValueChange={itemValue => setOrderDirection(itemValue)}>
@@ -52,8 +51,10 @@ const OrderScreen: React.FC<Props> = ({navigation}) => {
         <Picker.Item label="Descending" value="descending" />
       </Picker>
 
-      <Button title="Apply Order" onPress={applyOrder} />
-    </View>
+      <Apply onPress={applyOrder}>
+        <ApplyText>Apply Order</ApplyText>
+      </Apply>
+    </Container>
   );
 };
 

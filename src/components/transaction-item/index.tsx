@@ -1,5 +1,5 @@
 import React from 'react';
-import {Transaction} from '../../model/transaction';
+import {Transaction} from '../../database/model/transaction';
 import {
   Container,
   Details,

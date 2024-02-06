@@ -3,7 +3,7 @@ import {
   Transaction,
   getLocalTransactions,
   updateLocalTransactions,
-} from '../../model/transaction';
+} from '../../database/model/transaction';
 import {useFilter} from '../../context/filter';
 import Config from 'react-native-config';
 import storage from '@react-native-firebase/storage';

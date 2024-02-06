@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Button, Text} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {useFilter} from '../../context/filter';
 import {
   getUniqueTransactionTypes,
   getUniqueVendors,
-} from '../../model/transaction';
-import {styles} from './style';
+} from '../../database/model/transaction';
+import {Apply, ApplyText, Container, Label} from './style';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 type Props = {
@@ -46,8 +45,8 @@ const FilterScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Type:</Text>
+    <Container>
+      <Label>Type:</Label>
       <Picker
         selectedValue={selectedType}
         onValueChange={itemValue => setSelectedType(itemValue)}>
@@ -56,7 +55,7 @@ const FilterScreen: React.FC<Props> = ({navigation}) => {
           <Picker.Item key={type} label={type} value={type} />
         ))}
       </Picker>
-      <Text>Vendor:</Text>
+      <Label>Vendor:</Label>
       <Picker
         selectedValue={selectedVendor}
         onValueChange={itemValue => setSelectedVendor(itemValue)}>
@@ -65,8 +64,10 @@ const FilterScreen: React.FC<Props> = ({navigation}) => {
           <Picker.Item key={vendor} label={vendor} value={vendor} />
         ))}
       </Picker>
-      <Button title="Apply Filters" onPress={applyFilters} />
-    </View>
+      <Apply onPress={applyFilters}>
+        <ApplyText>Apply Filters</ApplyText>
+      </Apply>
+    </Container>
   );
 };
 

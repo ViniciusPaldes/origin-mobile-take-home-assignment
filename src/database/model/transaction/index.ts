@@ -1,4 +1,4 @@
-import realm from '../../database';
+import realm from '../..';
 import Realm from 'realm';
 
 export type Transaction = {

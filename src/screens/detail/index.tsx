@@ -72,14 +72,12 @@ const TransactionDetailScreen = ({route}) => {
         launchImageLibrary(options, response => {
           try {
             if (response.didCancel) {
-              console.log('User cancelled image picker');
               setReceiptLoading(false);
             } else if (response.errorCode) {
               throw new Error(`ImagePicker Error: ${response.errorMessage}`);
             } else {
               const uri = response.assets[0].uri;
               uploadImage(transaction.Id, uri).then(result => {
-                console.log('Result is', result);
                 if (result?.ok) {
                   Alert.alert(
                     'Success',
@@ -128,7 +126,6 @@ const TransactionDetailScreen = ({route}) => {
       },
       error => {
         Alert.alert('Location Error', 'Unable to retrieve current location.');
-        console.log(error);
         setLocationLoading(false);
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
