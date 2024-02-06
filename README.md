@@ -1,98 +1,69 @@
-# Origin Mobile Take Home Assignment
-## **Introduction**
+# Financial App - Tech Challenge - Vinícius Paldês
 
-This assignment assesses your skills and approach to building a mobile application using React Native. The focus is on creating an application that includes user authentication, transaction management, and integration of specific mobile features. It's important to consider that there will also be a React web desktop version of the same application. While you are not required to write the desktop version, your design should be scalable and maintainable, keeping in mind the existence of the web version.
+Hello, the goal of this app is to present my skills using React Native. The requirements are available in the original repo, this is a forked one from:
 
-## **Assignment Overview**
+https://github.com/OriginFinancial/origin-mobile-take-home-assignment
 
-Your task is to create a simple mobile application with the following features:
+## How to install and run
 
-### **1. Sign-In and Sign-Up Page**
+Please use Java Version 17.
+- Clone the project `git@github.com:ViniciusPaldes/origin-mobile-take-home-assignment.git`
+- Install dependencies `npm install`
+- Install iOS pods `cd ios` then `pod install`
+- Create a `.env` with the following format:
+ 
 
-- **Sign-In Page**: Allow users to sign in to their account.
-- **Sign-Up Page**: Allow new users to create an account. During the sign-up process, users must enter basic information (like name, email, password, etc.) and upload a selfie.
+>  API_URL=https://tque3jpn1e.execute-api.us-east-1.amazonaws.com/mobile-tha
+>     
+>  FIREBASE_API_KEY= 
+>  FIREBASE_AUTH_DOMAIN= 
+>  FIREBASE_PROJECT_ID=
+> FIREBASE_STORAGE_BUCKET= 
+> FIREBASE_MESSAGING_SENDER_ID=
+> FIREBASE_APP_ID=
+> 
+> GOOGLE_MAPS_API_KEY=
 
-### **2. Transactions Listing Page**
+## App Folder Structure
 
-- Display a list of transactions associated with the logged-in user. Each list item should have a summary of the transaction (e.g., date, amount, type).
-    - Required: pull to refresh
-    - Optional: sorting, filtering (client side)
+    .
+    ├── ...                 # Same structure of any react-native-cli init
+    ├── assets              # Assets folder for local images
+    ├── src                 # Source
+    │   ├── components      # Components that can be reused
+    │   ├── context         # Context Provider to share data among the app
+    │   └── database        # Realm database configuration
+    │       └── model       # Models for database entity
+    │   ├── navigation      # Navigation configuration
+    │   ├── screens         # Screens (used in navigation)
+    │   ├── services        # API Calls, Hooks and Specific Business Tasks
 
-### **3. Transaction Details Page**
+## Stack used
+- Styling: **styled-components**
+- Local database: **Realm**
+- API integration: **fetch**
+- Auth: **Firebase Authentication**
+- Image Storage (For Receipt Images): **Firebase Storage**
+- Maps: **react-native-maps** (With Google Cloud Service Provider)
+- Navigation: **react-navigation**
 
-- When a user selects a transaction from the list, they should be navigated to a detailed view of the transaction.
-    - **Required**: Allow users to attach the current GPS latitude and longitude coordinates to the transaction.
-    - **Optional**: Provide an option to attach a receipt to the transaction.
-    - Optional: Display location on the map
+## App Navigation
 
-### **4. App State Management Considerations**
+![App Screens](https://i.ibb.co/FVq1Y0q/Screenshot-2024-02-06-at-17-16-54.png)
 
-- Ensure that the application handles the app state effectively, especially during typical mobile interactions such as using the power button or home button. The app should maintain a consistent state and user experience.
-- Handle offline mode
+## Offline mode
 
-## **Technical Requirements**
+That's how I planned and developed the offline mode, using Realm as my local database
 
-- The application should be developed using React Native.
-- Ensure the app is compatible with both iOS and Android.
-- Implement proper error handling and validation, especially for the sign-in and sign-up processes.
-- Write clean, modular, and reusable code. Consider component reusability for the React web desktop version.
-- Include a README file with clear instructions on how to set up and run your application.
+![Offline mode](https://i.ibb.co/F7ftNZb/Screenshot-2024-02-06-at-17-16-47.png)
 
-## Available Resources
+## Attaching an Image as a Receipt for a transaction
 
-You have access to the following API’s:
+![Flow for uploading an image as ](https://i.ibb.co/RYND5Cj/Screenshot-2024-02-06-at-17-16-40.png)
 
-**Transactions - Listing** 
+## Pending work
 
-**Query parameters**
+- Centralize spacing and colors in a single file to be reused;
+- Complete SignUp form with Name and Selfie Picture (For Selfie Picture we can use the same logic that uploads the ReceiptImage)
 
-page: required
 
-pageSize: required
-
-```markdown
-GET https://tque3jpn1e.execute-api.us-east-1.amazonaws.com/mobile-tha/transactions?page=?&pageSize=?
-```
-
-**Transactions - Details**
-
-```markdown
-GET https://tque3jpn1e.execute-api.us-east-1.amazonaws.com/mobile-tha/transactions/{id}
-```
-
-**Transactions - Update coordinates**
-
-```markdown
-POST https://tque3jpn1e.execute-api.us-east-1.amazonaws.com/mobile-tha/transactions/{id}/coordinates
-```
-
-Body
-
-```
-{
-    "Lat": 1, --double,required, case sensitive
-    "Lon":1 --double, required, case sensitive
-}
-```
-
-**Transactions - Upload receipt**
-
-```markdown
-POST https://tque3jpn1e.execute-api.us-east-1.amazonaws.com/mobile-tha/transactions/{id}/receipt
-```
-
-Body
-
-```markdown
-{
-   "ReceiptImageUrl": "foo" --string,required, case sensitive
-}
-```
-
-Note: both POST APIs do not update internal resources as it would affect other candidates, thus such APIs are for demonstration only.
-
-## **Submission Guidelines**
-
-- Provide the source code via a GitHub repository.
-- Include a video demonstration of the app covering all the functionalities.
-- Document any assumptions made and your thought process in the README file.
