@@ -91,6 +91,7 @@ export const ActionBt = styled.TouchableOpacity`
   background-color: white;
   border-color: #276400;
   border-width: 1px;
+  height: 35px;
   border-radius: 16px;
   margin-vertical: 8px;
   padding: 8px 16px;

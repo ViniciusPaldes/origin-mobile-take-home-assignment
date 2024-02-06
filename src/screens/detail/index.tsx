@@ -47,7 +47,6 @@ const TransactionDetailScreen = ({route}) => {
         );
       }
     };
-
     getPermission();
   }, []);
 
@@ -55,7 +54,7 @@ const TransactionDetailScreen = ({route}) => {
     if (transaction.ReceiptImage) {
       setViewerVisible(true);
     } else {
-      setLocationLoading(false);
+      setReceiptLoading(true);
       const hasPermission = await requestLibraryPermission();
       if (!hasPermission) {
         Alert.alert(
