@@ -1,7 +1,21 @@
 import React, {useEffect} from 'react';
-import {View, Text, Button, Alert} from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
-import {styles} from './style';
+import {Alert} from 'react-native';
+import {Marker} from 'react-native-maps';
+import {
+  ActionBt,
+  ActionLabel,
+  AmountValue,
+  Column,
+  Container,
+  Content,
+  ContentAction,
+  ContentBody,
+  ContentHeader,
+  DateValue,
+  Label,
+  Map,
+  Vendor,
+} from './style';
 import Geolocation from 'react-native-geolocation-service';
 import {
   requestLibraryPermission,
@@ -12,6 +26,7 @@ import {
   uploadImage,
 } from '../../services/transaction';
 import {launchImageLibrary} from 'react-native-image-picker';
+import TypeIcon from '../../components/type-icon';
 
 const TransactionDetailScreen = ({route}) => {
   const {transaction} = route.params;
@@ -107,15 +122,21 @@ const TransactionDetailScreen = ({route}) => {
     }
   };
 
+  const getAmountModifier = (type: string) => {
+    switch (type) {
+      case 'withdrawal':
+      case 'payment':
+        return '-';
+      case 'deposit':
+        return '+';
+      default:
+        return '';
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Type: {transaction.Type}</Text>
-      <Text>Amount: ${transaction.Amount.toFixed(2)}</Text>
-      <Text>Date: {new Date(transaction.Date).toLocaleDateString()}</Text>
-      <Text>Vendor: {transaction.Vendor}</Text>
-      <Text>Category: {transaction.Category}</Text>
-      <MapView
-        style={styles.map}
+    <Container>
+      <Map
         initialRegion={{
           latitude: transaction.Lat,
           longitude: transaction.Lon,
@@ -127,10 +148,41 @@ const TransactionDetailScreen = ({route}) => {
           title={transaction.Vendor}
           description={`Amount: $${transaction.Amount.toFixed(2)}`}
         />
-      </MapView>
-      <Button title="Attach My Location" onPress={attachLocation} />
-      <Button title="Attach a Receipt" onPress={attachImage} />
-    </View>
+      </Map>
+      <Content>
+        <ContentHeader>
+          <TypeIcon type={transaction.Category} large />
+          <Vendor>{transaction.Vendor}</Vendor>
+        </ContentHeader>
+        <ContentBody>
+          <Column>
+            <Label>Amount</Label>
+            <AmountValue type={transaction.Type}>
+              {getAmountModifier(transaction.Type)}$
+              {transaction.Amount.toFixed(2)}
+            </AmountValue>
+          </Column>
+          <Column>
+            <Label>Date</Label>
+            <DateValue>
+              {new Date(transaction.Date).toLocaleDateString()}
+            </DateValue>
+          </Column>
+        </ContentBody>
+        <ContentAction>
+          <Label>Receipt</Label>
+          <ActionBt onPress={attachImage}>
+            <ActionLabel>+ Add your receipt</ActionLabel>
+          </ActionBt>
+        </ContentAction>
+        <ContentAction>
+          <Label>Location</Label>
+          <ActionBt onPress={attachLocation}>
+            <ActionLabel>+ Add your location</ActionLabel>
+          </ActionBt>
+        </ContentAction>
+      </Content>
+    </Container>
   );
 };
 

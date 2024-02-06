@@ -1,9 +1,7 @@
 import React from 'react';
 import {Transaction} from '../../model/transaction';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   Container,
-  IconContainer,
   Details,
   DateText,
   VendorText,
@@ -11,6 +9,7 @@ import {
   TypeText,
   DetailsHorizontal,
 } from './style';
+import TypeIcon from '../type-icon';
 
 type TransactionItemProps = {
   onPress: () => void;
@@ -21,37 +20,9 @@ const TransactionItem: React.FC<TransactionItemProps> = ({
   onPress,
   transaction,
 }) => {
-  const getIcon = (type: string) => {
-    let iconName;
-    let iconColor = 'black';
-
-    switch (type) {
-      case 'withdrawal':
-      case 'payment':
-        iconName = 'arrow-down';
-        iconColor = 'red';
-        break;
-      case 'deposit':
-        iconName = 'arrow-up';
-        iconColor = 'green';
-        break;
-      case 'invoice':
-        iconName = 'file-text';
-        iconColor = 'blue';
-        break;
-      default:
-        iconName = 'question-circle';
-        iconColor = 'grey';
-    }
-
-    return <FontAwesome name={iconName} size={20} color={iconColor} />;
-  };
-
   return (
     <Container onPress={onPress}>
-      <IconContainer transactionType={transaction.Type}>
-        {getIcon(transaction.Type)}
-      </IconContainer>
+      <TypeIcon type={transaction.Type} />
       <Details>
         <VendorText>{transaction.Vendor}</VendorText>
         <DetailsHorizontal>

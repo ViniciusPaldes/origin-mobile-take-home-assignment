@@ -5,10 +5,6 @@ interface StyledTextProps extends TextProps {
   transactionType: string;
 }
 
-interface StyledViewProps extends ViewProps {
-  transactionType: string;
-}
-
 export const Container = styled.TouchableOpacity`
   background-color: #fff;
   margin-vertical: 4px;
@@ -24,24 +20,6 @@ export const Container = styled.TouchableOpacity`
   padding: 12px;
 `;
 
-export const IconContainer = styled.View<StyledViewProps>`
-  background-color: ${({transactionType}) => {
-    switch (transactionType) {
-      case 'withdrawal':
-      case 'payment':
-        return '#ffebee';
-      case 'deposit':
-        return '#e8f5e9';
-      case 'invoice':
-        return '#e3f2fd';
-      default:
-        return '#eeeeee';
-    }
-  }};
-  padding: 8px;
-  border-radius: 30px;
-  margin-right: 12px;
-`;
 
 export const Details = styled.View`
   flex: 1;
