@@ -4,6 +4,10 @@ Hello, the goal of this app is to present my skills using React Native. The requ
 
 https://github.com/OriginFinancial/origin-mobile-take-home-assignment
 
+## Presenting Video
+Youtube URL with a Screen Record presenting the app (No Audio Included)
+https://www.youtube.com/watch?v=nrQVZ5tANwg
+
 ## How to install and run
 
 Please use Java Version 17.
@@ -15,11 +19,16 @@ Please use Java Version 17.
 
 >  API_URL=https://tque3jpn1e.execute-api.us-east-1.amazonaws.com/mobile-tha
 >     
->  FIREBASE_API_KEY= 
->  FIREBASE_AUTH_DOMAIN= 
->  FIREBASE_PROJECT_ID=
+> FIREBASE_API_KEY= 
+>
+> FIREBASE_AUTH_DOMAIN= 
+>
+> FIREBASE_PROJECT_ID=
+>
 > FIREBASE_STORAGE_BUCKET= 
+>
 > FIREBASE_MESSAGING_SENDER_ID=
+>
 > FIREBASE_APP_ID=
 > 
 > GOOGLE_MAPS_API_KEY=
@@ -65,5 +74,6 @@ That's how I planned and developed the offline mode, using Realm as my local dat
 
 - Centralize spacing and colors in a single file to be reused;
 - Complete SignUp form with Name and Selfie Picture (For Selfie Picture we can use the same logic that uploads the ReceiptImage)
+- Forgot Password link received on the Email not working (Must check Firebase setup)
 
 
