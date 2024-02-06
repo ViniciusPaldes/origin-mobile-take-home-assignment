@@ -47,15 +47,20 @@ const TransactionDetailScreen = ({route}) => {
         );
       }
     };
-
     getPermission();
   }, []);
+
+  useEffect(() => {
+    console.log(
+      `ReceiptLoading ${receiptLoading} | LocationLoading ${locationLoading}`,
+    );
+  }, [receiptLoading, locationLoading]);
 
   const attachImage = async () => {
     if (transaction.ReceiptImage) {
       setViewerVisible(true);
     } else {
-      setLocationLoading(false);
+      setReceiptLoading(true);
       const hasPermission = await requestLibraryPermission();
       if (!hasPermission) {
         Alert.alert(
