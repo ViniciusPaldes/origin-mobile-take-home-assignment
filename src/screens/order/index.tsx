@@ -3,7 +3,7 @@ import {View, Text, Button} from 'react-native';
 import {useFilter} from '../../context/filter';
 import {Picker} from '@react-native-picker/picker';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {transactionOrderOptions} from '../../model/transaction';
+import {transactionOrderOptions} from '../../database/model/transaction';
 import {styles} from './style';
 
 type Props = {

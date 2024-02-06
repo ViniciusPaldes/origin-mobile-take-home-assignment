@@ -5,7 +5,7 @@ import {useFilter} from '../../context/filter';
 import {
   getUniqueTransactionTypes,
   getUniqueVendors,
-} from '../../model/transaction';
+} from '../../database/model/transaction';
 import {styles} from './style';
 import {StackNavigationProp} from '@react-navigation/stack';
 

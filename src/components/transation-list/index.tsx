@@ -3,7 +3,7 @@ import {FlatList, RefreshControl, ActivityIndicator} from 'react-native';
 import TransactionItem from '../transaction-item';
 import {useTransactions} from '../../services/transaction';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Transaction} from '../../model/transaction';
+import {Transaction} from '../../database/model/transaction';
 import {formatISO} from 'date-fns';
 import {useFilter} from '../../context/filter';
 
