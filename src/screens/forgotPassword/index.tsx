@@ -9,7 +9,15 @@ import {
   Platform,
 } from 'react-native';
 import {resetPassword} from '../../auth';
-import {styles} from './style';
+import {
+  Button,
+  ButtonText,
+  Container,
+  Input,
+  Logo,
+  Title,
+  styles,
+} from './style';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 type Props = {
@@ -38,28 +46,22 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <KeyboardAvoidingView
+    <Container
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-      style={styles.container}>
-      <Image
-        source={require('../../../assets/logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.title}>Recover you Origin Account</Text>
-      <TextInput
-        style={styles.input}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+      <Logo source={require('../../../assets/logo.png')} resizeMode="contain" />
+      <Title>Recover your Account</Title>
+      <Input
         onChangeText={text => setEmail(text)}
         value={email}
         placeholder="Email"
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
-        <Text style={styles.buttonText}>Recover your password</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+      <Button onPress={handleResetPassword}>
+        <ButtonText>Recover your password</ButtonText>
+      </Button>
+    </Container>
   );
 };
 

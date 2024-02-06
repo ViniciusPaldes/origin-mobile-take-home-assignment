@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import {signUp} from '../../auth';
-import {styles} from './style';
+import {
+  StyledButton,
+  StyledButtonText,
+  StyledInput,
+  StyledKeyboardAvoidingView,
+  StyledLogo,
+  StyledTitle,
+} from './style';
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');
@@ -26,35 +24,32 @@ const SignUpScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
+    <StyledKeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-      style={styles.container}>
-      <Image
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+      <StyledLogo
         source={require('../../../assets/logo.png')}
-        style={styles.logo}
         resizeMode="contain"
       />
-      <Text style={styles.title}>Sign Up</Text>
-      <TextInput
-        style={styles.input}
+      <StyledTitle>Sign Up</StyledTitle>
+      <StyledInput
         onChangeText={text => setEmail(text)}
         value={email}
         placeholder="Email"
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TextInput
-        style={styles.input}
+      <StyledInput
         onChangeText={text => setPassword(text)}
         value={password}
         placeholder="Password"
         secureTextEntry
+        autoCapitalize="none"
       />
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+      <StyledButton onPress={handleSignUp}>
+        <StyledButtonText>Sign Up</StyledButtonText>
+      </StyledButton>
+    </StyledKeyboardAvoidingView>
   );
 };
 
