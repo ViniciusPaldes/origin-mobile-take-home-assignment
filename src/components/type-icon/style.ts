@@ -16,11 +16,10 @@ export const IconContainer = styled.View<StyledViewProps>`
       case 'invoice':
         return '#e8f5e9';
       case 'entertainment':
-        return '#3498DB';
       case 'shopping':
-        return '#27AE60';
       case 'drinks and dinning':
-        return '#2980B9';
+        return '#004C31';
+
       default:
         return '#eeeeee';
     }

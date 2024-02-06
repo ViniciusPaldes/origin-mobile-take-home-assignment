@@ -56,10 +56,8 @@ const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TouchableOpacity
-        style={styles.signUpButton}
-        onPress={handleResetPassword}>
-        <Text style={styles.signUpButtonText}>Recover your password</Text>
+      <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+        <Text style={styles.buttonText}>Recover your password</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );

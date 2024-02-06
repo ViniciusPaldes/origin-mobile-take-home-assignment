@@ -89,7 +89,7 @@ export const ContentAction = styled.View`
 
 export const ActionBt = styled.TouchableOpacity`
   background-color: white;
-  border-color: #29605e;
+  border-color: #276400;
   border-width: 1px;
   border-radius: 16px;
   margin-vertical: 8px;
@@ -98,7 +98,7 @@ export const ActionBt = styled.TouchableOpacity`
 `;
 
 export const ActionLabel = styled.Text`
-  color: #29605e;
+  color: #276400;
   font-weight: bold;
   font-size: 14px;
 `;

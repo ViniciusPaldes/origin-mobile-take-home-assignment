@@ -24,7 +24,7 @@ const TypeIcon: React.FC<Props> = ({type, large = false}) => {
         break;
       case 'invoice':
         iconName = 'file-text';
-        iconColor = 'blue';
+        iconColor = '#01284f';
         break;
       case 'entertainment':
         iconName = 'ticket';

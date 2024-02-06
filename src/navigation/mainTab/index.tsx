@@ -11,7 +11,7 @@ const MainTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({route, navigation}) => ({
-        tabBarActiveTintColor: 'green',
+        tabBarActiveTintColor: '#01284f',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: [{display: 'flex'}, null],
         headerRight: () =>
@@ -19,6 +19,10 @@ const MainTabNavigator = () => {
             <NavigationOptions navigation={navigation} />
           ) : null,
         headerTitle: route.name === 'Transactions' ? 'Transactions' : undefined,
+        headerStyle: {
+          backgroundColor: '#01284f',
+        },
+        headerTintColor: '#fff',
       })}>
       <Tab.Screen
         name="Transactions"

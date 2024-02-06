@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: '#29605e',
+    backgroundColor: '#004C31',
     borderRadius: 5,
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -39,27 +39,5 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  signUpButton: {
-    borderColor: '#29605e',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    marginBottom: 10,
-  },
-  signUpButtonText: {
-    color: '#29605e',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  forgotPasswordButton: {
-    marginTop: 10,
-  },
-  forgotPasswordButtonText: {
-    color: '#29605e',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });

@@ -35,7 +35,7 @@ const SignUpScreen = () => {
         style={styles.logo}
         resizeMode="contain"
       />
-      <Text style={styles.title}>Register in Origin</Text>
+      <Text style={styles.title}>Sign Up</Text>
       <TextInput
         style={styles.input}
         onChangeText={text => setEmail(text)}
@@ -51,8 +51,8 @@ const SignUpScreen = () => {
         placeholder="Password"
         secureTextEntry
       />
-      <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-        <Text style={styles.signUpButtonText}>Register</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );

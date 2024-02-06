@@ -52,7 +52,7 @@ export const AmountText = styled.Text<StyledTextProps>`
       case 'deposit':
         return '#2e7d32';
       case 'invoice':
-        return '#1976d2';
+        return '#01284f';
       default:
         return '#000';
     }
