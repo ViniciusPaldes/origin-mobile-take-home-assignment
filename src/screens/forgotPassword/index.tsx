@@ -1,15 +1,7 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import {resetPassword} from '../../auth';
-import {styles} from './style';
+import {ActivityIndicator, Alert, Platform} from 'react-native';
+import {resetPassword} from '../../services/auth';
+import {Button, ButtonText, Container, Input, Logo, Title} from './style';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 type Props = {
@@ -18,50 +10,64 @@ type Props = {
 
 const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleResetPassword = async () => {
-    try {
-      await resetPassword(email);
-      Alert.alert(
-        'Check your email',
-        'A link to reset your password has been sent to your email.',
-        [
+  const handleResetPassword = () => {
+    setLoading(true);
+    resetPassword(email)
+      .then(() => {
+        Alert.alert(
+          'Check your email',
+          'A link to reset your password has been sent to your email.',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.goBack(), // Navigate back when OK is pressed
+            },
+          ],
+        );
+      })
+      .catch(error => {
+        Alert.alert(
+          'Failed to send reset email',
+          error.message,
+          [
+            {
+              text: 'OK',
+              style: 'cancel',
+            },
+          ],
           {
-            text: 'OK',
-            onPress: () => navigation.goBack(), // Navigate back when OK is pressed
+            cancelable: true,
           },
-        ],
-      );
-    } catch (error) {
-      Alert.alert('Failed to send reset email', error.message);
-    }
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
-    <KeyboardAvoidingView
+    <Container
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-      style={styles.container}>
-      <Image
-        source={require('../../../assets/logo.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.title}>Recover you Origin Account</Text>
-      <TextInput
-        style={styles.input}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+      <Logo source={require('../../../assets/logo.png')} resizeMode="contain" />
+      <Title>Recover your Account</Title>
+      <Input
         onChangeText={text => setEmail(text)}
         value={email}
         placeholder="Email"
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TouchableOpacity
-        style={styles.signUpButton}
-        onPress={handleResetPassword}>
-        <Text style={styles.signUpButtonText}>Recover your password</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+      <Button onPress={handleResetPassword}>
+        {loading ? (
+          <ActivityIndicator size="small" />
+        ) : (
+          <ButtonText>Recover your password</ButtonText>
+        )}
+      </Button>
+    </Container>
   );
 };
 

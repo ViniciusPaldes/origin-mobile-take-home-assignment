@@ -9,7 +9,13 @@ const Stack = createStackNavigator();
 
 const TransactionNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#01284f',
+        },
+        headerTintColor: '#fff',
+      }}>
       <Stack.Screen
         name="Home"
         component={MainTabNavigator}

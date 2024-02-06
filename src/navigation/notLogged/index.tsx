@@ -8,7 +8,13 @@ const Stack = createStackNavigator();
 
 const NotLoggedStackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#01284f',
+        },
+        headerTintColor: '#fff',
+      }}>
       <Stack.Screen
         name="Login"
         component={LoginScreen}

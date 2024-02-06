@@ -140,20 +140,29 @@ const uploadToFirebaseStorage = async imageUri => {
 export const uploadImage = async (transactionId: string, imageUri) => {
   const imageUrl = await uploadToFirebaseStorage(imageUri);
 
-  console.log(
-    `Saving transaction with ID ${transactionId} with the image URL: ${imageUrl}`,
-  );
-
-  fetch(`${Config.API_URL}/transactions/${transactionId}/receipt`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetch(
+    `${Config.API_URL}/transactions/${transactionId}/receipt`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ReceiptImageUrl: imageUrl,
+      }),
     },
-    body: JSON.stringify({
-      ReceiptImageUrl: imageUrl,
-    }),
-  })
-    .then(response => response)
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
+  );
+  return response;
+};
+
+export const getAmountModifier = (type: string) => {
+  switch (type) {
+    case 'withdrawal':
+    case 'payment':
+      return '-';
+    case 'deposit':
+      return '+';
+    default:
+      return '';
+  }
 };

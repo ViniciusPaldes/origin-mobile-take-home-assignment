@@ -5,6 +5,7 @@ import {useTransactions} from '../../services/transaction';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Transaction} from '../../model/transaction';
 import {formatISO} from 'date-fns';
+import {useFilter} from '../../context/filter';
 
 type Props = {
   navigation: StackNavigationProp<any>;
@@ -13,7 +14,19 @@ type Props = {
 const TransactionList: React.FC<Props> = ({navigation}) => {
   const {transactions, loading, isRefreshing, handleRefresh, handleLoadMore} =
     useTransactions();
+  const {filterCriteria, setFilterCriteria} = useFilter();
 
+  const localHandleRefresh = () => {
+    setFilterCriteria({});
+    handleRefresh();
+  };
+
+  const localHandleLoadMore = () => {
+    if (filterCriteria.type || filterCriteria.vendor) {
+    } else {
+      handleLoadMore();
+    }
+  };
   const handleItemPressed = (selectedTransaction: Transaction) => {
     navigation.navigate('Detail', {
       transaction: {
@@ -34,9 +47,12 @@ const TransactionList: React.FC<Props> = ({navigation}) => {
       )}
       keyExtractor={item => item.Id.toString()}
       refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={localHandleRefresh}
+        />
       }
-      onEndReached={handleLoadMore}
+      onEndReached={localHandleLoadMore}
       onEndReachedThreshold={0.5}
       ListFooterComponent={
         loading ? <ActivityIndicator size="large" color="#0000ff" /> : null

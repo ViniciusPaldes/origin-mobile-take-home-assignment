@@ -13,7 +13,6 @@ export type Transaction = {
   ReceiptImage: string | null;
 };
 
-// To use for order feature
 export const transactionOrderOptions = ['Amount', 'Date', 'Vendor', 'Type'];
 
 interface FilterCriteria {
@@ -114,7 +113,10 @@ export const getUniqueTransactionTypes = () => {
 };
 
 export const getUniqueVendors = () => {
-  const transactions = getLocalTransactions();
+  const transactions = getLocalTransactions({
+    orderBy: 'Vendor',
+    orderDirection: 'ascending',
+  });
   const uniqueVendors = Array.from(new Set(transactions.map(t => t.Vendor)));
   return uniqueVendors;
 };

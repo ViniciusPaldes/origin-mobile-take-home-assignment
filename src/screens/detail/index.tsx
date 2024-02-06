@@ -1,20 +1,40 @@
-import React, {useEffect} from 'react';
-import {View, Text, Button, Alert} from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
-import {styles} from './style';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Alert} from 'react-native';
+import {Marker} from 'react-native-maps';
+import {
+  ActionBt,
+  ActionLabel,
+  AmountValue,
+  Column,
+  Container,
+  Content,
+  ContentAction,
+  ContentBody,
+  ContentHeader,
+  DateValue,
+  Label,
+  Map,
+  Vendor,
+} from './style';
 import Geolocation from 'react-native-geolocation-service';
 import {
   requestLibraryPermission,
   requestLocationPermission,
 } from '../../services/location';
 import {
+  getAmountModifier,
   updateTransactionCoordinates,
   uploadImage,
 } from '../../services/transaction';
 import {launchImageLibrary} from 'react-native-image-picker';
+import TypeIcon from '../../components/type-icon';
+import ReceiptViewer from '../../components/receipt-viewer';
 
 const TransactionDetailScreen = ({route}) => {
   const {transaction} = route.params;
+  const [receiptLoading, setReceiptLoading] = useState<boolean>(false);
+  const [locationLoading, setLocationLoading] = useState<boolean>(false);
+  const [viewerVisible, setViewerVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const getPermission = async () => {
@@ -32,35 +52,61 @@ const TransactionDetailScreen = ({route}) => {
   }, []);
 
   const attachImage = async () => {
-    const hasPermission = await requestLibraryPermission();
-    if (!hasPermission) {
-      Alert.alert(
-        'Library Permission',
-        'You need to allow access to your photo library to select a picture.',
-        [{text: 'OK'}],
-      );
+    if (transaction.ReceiptImage) {
+      setViewerVisible(true);
     } else {
-      const options = {
-        mediaType: 'photo',
-        selectionLimit: 1,
-      };
+      setLocationLoading(false);
+      const hasPermission = await requestLibraryPermission();
+      if (!hasPermission) {
+        Alert.alert(
+          'Library Permission',
+          'You need to allow access to your photo library to select a picture.',
+          [{text: 'OK'}],
+        );
+        setReceiptLoading(false);
+      } else {
+        const options = {
+          mediaType: 'photo',
+          selectionLimit: 1,
+        };
 
-      launchImageLibrary(options, response => {
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-        } else if (response.errorCode) {
-          console.log('ImagePicker Error: ', response.errorMessage);
-        } else {
-          const uri = response.assets[0].uri;
-          uploadImage(transaction.Id, uri).then(result => {
-            console.log('Result for final upload is ', result);
-          });
-        }
-      });
+        launchImageLibrary(options, response => {
+          try {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+              setReceiptLoading(false);
+            } else if (response.errorCode) {
+              throw new Error(`ImagePicker Error: ${response.errorMessage}`);
+            } else {
+              const uri = response.assets[0].uri;
+              uploadImage(transaction.Id, uri).then(result => {
+                console.log('Result is', result);
+                if (result?.ok) {
+                  Alert.alert(
+                    'Success',
+                    'Receipt attached to the transaction successfully.',
+                  );
+                } else {
+                  throw new Error('Failed to update transaction receipt');
+                }
+                setReceiptLoading(false);
+              });
+            }
+          } catch (error) {
+            Alert.alert(
+              'Error',
+              'Failed to attach location to the transaction.',
+            );
+            console.error(error);
+            setReceiptLoading(false);
+          }
+        });
+      }
     }
   };
 
   const attachLocation = () => {
+    setLocationLoading(true);
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
@@ -68,7 +114,11 @@ const TransactionDetailScreen = ({route}) => {
           'Attach Location',
           `Confirm attaching your current location (Lat: ${latitude}, Long: ${longitude}) to this transaction?`,
           [
-            {text: 'Cancel', style: 'cancel'},
+            {
+              text: 'Cancel',
+              style: 'cancel',
+              onPress: () => setLocationLoading(false),
+            },
             {
               text: 'Confirm',
               onPress: () => handleLocationUpdate(latitude, longitude),
@@ -80,6 +130,7 @@ const TransactionDetailScreen = ({route}) => {
       error => {
         Alert.alert('Location Error', 'Unable to retrieve current location.');
         console.log(error);
+        setLocationLoading(false);
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
@@ -95,27 +146,26 @@ const TransactionDetailScreen = ({route}) => {
       if (!response.ok) {
         throw new Error('Failed to update transaction coordinates');
       }
-      // Handle success
       Alert.alert(
         'Success',
         'Location attached to the transaction successfully.',
       );
+      setLocationLoading(false);
     } catch (error) {
-      // Handle failure
       Alert.alert('Error', 'Failed to attach location to the transaction.');
       console.error(error);
+      setLocationLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Type: {transaction.Type}</Text>
-      <Text>Amount: ${transaction.Amount.toFixed(2)}</Text>
-      <Text>Date: {new Date(transaction.Date).toLocaleDateString()}</Text>
-      <Text>Vendor: {transaction.Vendor}</Text>
-      <Text>Category: {transaction.Category}</Text>
-      <MapView
-        style={styles.map}
+    <Container>
+      <ReceiptViewer
+        visible={viewerVisible}
+        onClose={() => setViewerVisible(false)}
+        imageUrl={transaction.ReceiptImage}
+      />
+      <Map
         initialRegion={{
           latitude: transaction.Lat,
           longitude: transaction.Lon,
@@ -127,10 +177,53 @@ const TransactionDetailScreen = ({route}) => {
           title={transaction.Vendor}
           description={`Amount: $${transaction.Amount.toFixed(2)}`}
         />
-      </MapView>
-      <Button title="Attach My Location" onPress={attachLocation} />
-      <Button title="Attach a Receipt" onPress={attachImage} />
-    </View>
+      </Map>
+      <Content>
+        <ContentHeader>
+          <TypeIcon type={transaction.Category} large />
+          <Vendor>{transaction.Vendor}</Vendor>
+        </ContentHeader>
+        <ContentBody>
+          <Column>
+            <Label>Amount</Label>
+            <AmountValue type={transaction.Type}>
+              {getAmountModifier(transaction.Type)}$
+              {transaction.Amount.toFixed(2)}
+            </AmountValue>
+          </Column>
+          <Column>
+            <Label>Date</Label>
+            <DateValue>
+              {new Date(transaction.Date).toLocaleDateString()}
+            </DateValue>
+          </Column>
+        </ContentBody>
+        <ContentAction>
+          <Label>Receipt</Label>
+          <ActionBt onPress={attachImage}>
+            {receiptLoading ? (
+              <ActivityIndicator size={'small'} />
+            ) : (
+              <ActionLabel>
+                {transaction.ReceiptImage
+                  ? 'See receipt'
+                  : '+ Add your receipt'}
+              </ActionLabel>
+            )}
+          </ActionBt>
+        </ContentAction>
+        <ContentAction>
+          <Label>Location</Label>
+          <ActionBt onPress={attachLocation}>
+            {locationLoading ? (
+              <ActivityIndicator size={'small'} />
+            ) : (
+              <ActionLabel>+ Add your location</ActionLabel>
+            )}
+          </ActionBt>
+        </ContentAction>
+      </Content>
+    </Container>
   );
 };
 

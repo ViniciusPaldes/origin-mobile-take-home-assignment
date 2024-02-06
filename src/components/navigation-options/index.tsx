@@ -15,12 +15,12 @@ const NavigationOptions: React.FC<Props> = ({navigation}) => {
       <TouchableOpacity
         style={styles.action}
         onPress={() => navigation.navigate('Order')}>
-        <FontAwesome name="sort" size={25} color="black" />
+        <FontAwesome name="sort" size={25} color="white" />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.action}
         onPress={() => navigation.navigate('Filter')}>
-        <FontAwesome name="filter" size={25} color="black" />
+        <FontAwesome name="filter" size={25} color="white" />
       </TouchableOpacity>
     </View>
   );
