@@ -23,12 +23,12 @@ const NotLoggedStackNavigator = () => {
       <Stack.Screen
         name="SignUp"
         component={SignUpScreen}
-        options={{title: 'Register'}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="ForgotPassword"
         component={ForgotPasswordScreen}
-        options={{title: 'Recover your password'}}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

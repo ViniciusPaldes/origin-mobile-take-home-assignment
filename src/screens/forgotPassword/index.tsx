@@ -1,73 +1,17 @@
-import React, {useState} from 'react';
-import {ActivityIndicator, Alert, Platform} from 'react-native';
-import {resetPassword} from '../../services/auth';
-import {Button, ButtonText, Container, Input, Logo, Title} from './style';
+import React from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
+import NonLoggedScreen from '../../components/non-logged-screen';
+import ForgotPasswordForm from '../../components/forgot-password-form';
 
 type Props = {
   navigation: StackNavigationProp<any>;
 };
 
 const ForgotPasswordScreen: React.FC<Props> = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleResetPassword = () => {
-    setLoading(true);
-    resetPassword(email)
-      .then(() => {
-        Alert.alert(
-          'Check your email',
-          'A link to reset your password has been sent to your email.',
-          [
-            {
-              text: 'OK',
-              onPress: () => navigation.goBack(), // Navigate back when OK is pressed
-            },
-          ],
-        );
-      })
-      .catch(error => {
-        Alert.alert(
-          'Failed to send reset email',
-          error.message,
-          [
-            {
-              text: 'OK',
-              style: 'cancel',
-            },
-          ],
-          {
-            cancelable: true,
-          },
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   return (
-    <Container
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
-      <Logo source={require('../../../assets/logo.png')} resizeMode="contain" />
-      <Title>Recover your Account</Title>
-      <Input
-        onChangeText={text => setEmail(text)}
-        value={email}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <Button onPress={handleResetPassword}>
-        {loading ? (
-          <ActivityIndicator size="small" />
-        ) : (
-          <ButtonText>Recover your password</ButtonText>
-        )}
-      </Button>
-    </Container>
+    <NonLoggedScreen navigation={navigation}>
+      <ForgotPasswordForm navigation={navigation} />
+    </NonLoggedScreen>
   );
 };
 

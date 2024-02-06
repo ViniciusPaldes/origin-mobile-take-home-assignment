@@ -1,17 +1,9 @@
 import styled from 'styled-components/native';
 
-export const StyledKeyboardAvoidingView = styled.KeyboardAvoidingView`
+export const Container = styled.View`
   flex: 1;
+  width: 100%;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background-color: #fafbf6;
-`;
-
-export const StyledLogo = styled.Image`
-  width: 150px;
-  height: 150px;
-  margin-bottom: 20px;
 `;
 
 export const StyledTitle = styled.Text`
@@ -19,6 +11,7 @@ export const StyledTitle = styled.Text`
   font-weight: bold;
   margin-bottom: 20px;
   color: black;
+  text-align: center;
 `;
 
 export const StyledInput = styled.TextInput`
